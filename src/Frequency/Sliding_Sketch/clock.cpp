@@ -37,14 +37,20 @@ void Recent_Counter::CM_Init(const unsigned char* str, int length, unsigned long
     Clock_Go(num * step);
     for(int i = 0;i < hash_number;++i){
         position = Hash(str, i, length) % row_length + i * row_length;
+        // yesterdayかtodayかの判定か
         counter[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
     }
 }
 
 void Recent_Counter::CU_Init(const unsigned char* str, int length, unsigned long long int num){
+    // clock_posの初期値は0だった
+    // row_lengthは固定
     int k = clock_pos / row_length;
+    // ここでclock_posを更新している
     Clock_Go(num * step);
+    // k * row_length は多分オフセットかな
     unsigned int position = Hash(str, k ,length) % row_length + k * row_length;
+    // yesterdayかtodayかの判定か，違うかな？
     if(position < clock_pos){
         k = (k + 1) % hash_number;
         position = Hash(str, k ,length) % row_length + k * row_length;

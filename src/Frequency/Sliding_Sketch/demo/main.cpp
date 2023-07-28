@@ -25,7 +25,9 @@ unordered_map<Data, int, My_Hash> mp;
 void Read_File(int argc, char* argv[]){
     int cycle = 50000;
     int hash_number = 10;
-    double mymemory  = 2;
+    // double mymemory  = 1;
+    // double mymemory  = 2;
+    double mymemory  = 3;
     int input_num_max = 500000;
     int field_num = 2;
     int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
@@ -40,7 +42,8 @@ void Read_File(int argc, char* argv[]){
     double CM_ae = 0,  CU_ae = 0,  CO_ae = 0;
     double CM_re = 0,  CU_re = 0,  CO_re = 0;
 
-    FILE* file = fopen("../../../../data/formatted00.dat","rb");
+    // FILE* file = fopen("../../../../data/formatted00.dat","rb");
+    FILE* file = fopen("../../../../data/web_page2.dat","rb");
     Data packet;
 
 
@@ -60,6 +63,8 @@ void Read_File(int argc, char* argv[]){
 
 
         dat[pos] = packet;
+        // バイナリデータ？
+        // cout << packet.str << endl;
 
         CM_Counter.CM_Init(packet.str, DATA_LEN, num);
         CU_Counter.CU_Init(packet.str, DATA_LEN, num);
@@ -94,8 +99,8 @@ void Read_File(int argc, char* argv[]){
 
         if(num%cycle ==0){
         cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
-        cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
-        cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
+        // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
+        // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }
 
 
