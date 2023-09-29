@@ -1,0 +1,36 @@
+init do
+  c1 ← x
+  c2 ← y 
+  count[1...c1, 1...c2] ← 0 #Count-Min Sketch
+  element_count[1..Γ] ← 0 #新たなSketch,Γ:要素の種類数
+  更新間隔 ← δ #δ:element_countを更新する間隔
+  t ← 0 ▶経過時間
+  hash(行数,要素)関数を定義，hash関数は引数を受け取り，{x|1≦x≦c2}を返す関数
+end init
+
+upon <Sample | j> do
+	t ← t + 1
+	initialize_element
+	for i = 1 to c1 do
+		update(j)
+	end for
+end upon
+
+function GetFrecuency(j)
+  return min{count[i,hash(i,j)]+element_count[j] | 1≦i≦c1}
+end function
+  
+function update(j)
+    element_count[j] ← element_count[j] + 1
+end function
+
+function initialize_element_count ▶elemnt_countの値をcountへ代入する
+  if (t % 更新間隔 = 0) then
+		for k = 1 to Γ do
+			for i = 1 to c1 do
+				count[i,hash(i,k)] ← count[i,hash(i,k)] + element_count[k]
+      end for
+			element_count[k] ← 0
+		end for
+	end if
+end function
