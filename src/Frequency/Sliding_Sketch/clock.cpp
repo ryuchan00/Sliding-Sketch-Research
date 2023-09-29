@@ -113,10 +113,15 @@ int Recent_Counter::CO_Query(const unsigned char *str, int length){
 }
 
 void Recent_Counter::Clock_Go(unsigned long long int num){
+    // coutで細かい値を見ていく
+    // 最初はスケッチの値を小さくするなどして工夫してみる
+    
     for(;last_time < num;++last_time){
         counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
+        // lenはスケッチのサイズ(ハッシュ関数×ハッシュ値域)
         clock_pos = (clock_pos + 1) % len;
         if(clock_pos == 0){
+            // field_numのどちらがTodayですか？
             cycle_num = (cycle_num + 1) % field_num;
         }
     }

@@ -29,6 +29,7 @@ void Read_File(int argc, char* argv[]){
     // double mymemory  = 2;
     double mymemory  = 3;
     int input_num_max = 500000;
+    // バケットの数(today or yesterday)
     int field_num = 2;
     int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
     // hash_number * row_lengthはスケッチ全体のサイズ
