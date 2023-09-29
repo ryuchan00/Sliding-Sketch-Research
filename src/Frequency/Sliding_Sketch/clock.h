@@ -13,6 +13,7 @@ class Recent_Sketch{
 public :
     unsigned int clock_pos;
     unsigned int len;
+    // 更新周期
     unsigned int step;
     unsigned int cycle_num;
     int row_length;

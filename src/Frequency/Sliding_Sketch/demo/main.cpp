@@ -31,6 +31,8 @@ void Read_File(int argc, char* argv[]){
     int input_num_max = 500000;
     int field_num = 2;
     int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
+    // hash_number * row_lengthはスケッチ全体のサイズ
+    // 
     Recent_Counter CM_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
     Recent_Counter CU_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
     Recent_Counter CO_Counter(2*cycle/3, hash_number * row_length, row_length, hash_number, field_num);
