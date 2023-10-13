@@ -113,6 +113,9 @@ int Recent_Counter::CO_Query(const unsigned char *str, int length){
 }
 
 void Recent_Counter::Clock_Go(unsigned long long int num){
+    // coutで細かい値を見ていく
+    // 最初はスケッチの値を小さくするなどして工夫してみる
+    
     std::cout << "last_time" << last_time << std::endl;
     for(;last_time < num;++last_time){
         int display_flag = 0;
@@ -127,6 +130,7 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         }
         clock_pos = (clock_pos + 1) % len;
         if(clock_pos == 0){
+            // field_numのどちらがTodayですか？
             cycle_num = (cycle_num + 1) % field_num;
         }
     }
