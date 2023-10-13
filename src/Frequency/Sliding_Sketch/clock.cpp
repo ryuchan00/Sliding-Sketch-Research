@@ -113,11 +113,33 @@ int Recent_Counter::CO_Query(const unsigned char *str, int length){
 }
 
 void Recent_Counter::Clock_Go(unsigned long long int num){
+    std::cout << "last_time" << last_time << std::endl;
     for(;last_time < num;++last_time){
+        int display_flag = 0;
+        // std::cout << "clock_pos= " << clock_pos << std::endl;
+        if (counter[clock_pos].count[0] != 0 && counter[clock_pos].count[1] != 0) {
+            std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << " => ";
+            display_flag = 1;
+        }
         counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
+        if (display_flag == 1) {
+            std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << std::endl;
+        }
         clock_pos = (clock_pos + 1) % len;
         if(clock_pos == 0){
             cycle_num = (cycle_num + 1) % field_num;
         }
     }
+    // std::cout << "len,field_num:";
+    // std::cout << std::endl;
+    // std::cout << len << " ";
+    // std::cout << field_num;
+    // std::cout << std::endl;
+    // for(int i = 0;i < field_num;++i){
+        // for(int j = 0;j < field_num;++j){
+            // std::cout << counter[i].count[j] << " ";
+        // }
+        // std::cout << counter[clock_pos].count[i] << std::endl;
+    // }
+    
 }
