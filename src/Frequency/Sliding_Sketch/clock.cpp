@@ -20,16 +20,21 @@ int Recent_Sketch::Mid(int *num){
 Recent_Counter::Recent_Counter(int c, int l, int _row_length, int _hash_numberber, int _field_num):
     Recent_Sketch(c,l,_row_length,_hash_numberber,_field_num){
     counter = new Unit [l];
+    counter2 = new Unit [l];
     field_num = _field_num;
     for(int i = 0; i < l; i++){
         counter[i].count = new int[_field_num];
         counter[i].field_num = _field_num;
+        counter2[i].count = new int[_field_num];
+        counter2[i].field_num = _field_num;
         memset(counter[i].count, 0, _field_num * sizeof(int));
+        memset(counter2[i].count, 0, _field_num * sizeof(int));
     }
 }
 
 Recent_Counter::~Recent_Counter(){
     delete [] counter;
+    // delete [] counter2;
 }
 
 void Recent_Counter::CM_Init(const unsigned char* str, int length, unsigned long long int num){
@@ -39,6 +44,7 @@ void Recent_Counter::CM_Init(const unsigned char* str, int length, unsigned long
         position = Hash(str, i, length) % row_length + i * row_length;
         // yesterdayかtodayかの判定か
         counter[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
+        // counter2[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
     }
 }
 
@@ -116,17 +122,53 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
     // coutで細かい値を見ていく
     // 最初はスケッチの値を小さくするなどして工夫してみる
     
+    // std::cout << "last_time" << last_time << std::endl;
+    for(;last_time < num;++last_time){
+        // int display_flag = 0;
+        // std::cout << "clock_pos= " << clock_pos << std::endl;
+        // if (counter[clock_pos].count[0] != 0 && counter[clock_pos].count[1] != 0) {
+        //     std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << " => ";
+        //     display_flag = 1;
+        // }
+        counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
+        // if (display_flag == 1) {
+        //     std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << std::endl;
+        // }
+        
+        clock_pos = (clock_pos + 1) % len;
+        if(clock_pos == 0){
+            // field_numのどちらがTodayですか？
+            cycle_num = (cycle_num + 1) % field_num;
+        }
+    }
+}
+
+void Recent_Counter::Clock_Go(unsigned long long int num, bool counter2_flag){
+    // coutで細かい値を見ていく
+    // 最初はスケッチの値を小さくするなどして工夫してみる
+    
     std::cout << "last_time" << last_time << std::endl;
     for(;last_time < num;++last_time){
         int display_flag = 0;
         // std::cout << "clock_pos= " << clock_pos << std::endl;
-        if (counter[clock_pos].count[0] != 0 && counter[clock_pos].count[1] != 0) {
-            std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << " => ";
-            display_flag = 1;
-        }
-        counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
-        if (display_flag == 1) {
-            std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << std::endl;
+        if (counter2_flag == false) {
+            if (counter[clock_pos].count[0] != 0 && counter[clock_pos].count[1] != 0) {
+                std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << " => ";
+                display_flag = 1;
+            }
+            counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
+            if (display_flag == 1) {
+                std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << std::endl;
+            }
+        } else {
+            if (counter2[clock_pos].count[0] != 0 && counter2[clock_pos].count[1] != 0) {
+                std::cout << counter2[clock_pos].count[0] << " " << counter2[clock_pos].count[1] << " => ";
+                display_flag = 1;
+            }
+            counter2[clock_pos].count[(cycle_num + 1) % field_num] = 0;
+            if (display_flag == 1) {
+                std::cout << counter2[clock_pos].count[0] << " " << counter2[clock_pos].count[1] << std::endl;
+            }
         }
         clock_pos = (clock_pos + 1) % len;
         if(clock_pos == 0){

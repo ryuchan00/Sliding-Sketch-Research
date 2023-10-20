@@ -25,6 +25,7 @@ unordered_map<Data, int, My_Hash> mp;
 void Read_File(int argc, char* argv[]){
     int cycle = 50000;
     // int cycle = 5;
+    // 所持しているハッシュ関数
     int hash_number = 10;
     // int hash_number = 2;
     // double mymemory  = 1;
@@ -35,12 +36,13 @@ void Read_File(int argc, char* argv[]){
     // int input_num_max = 50;
     // バケットの数(today or yesterday)
     int field_num = 2;
+    // 衝突の関係する
     int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
     // hash_number * row_lengthはスケッチ全体のサイズ
     // 
     Recent_Counter CM_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
-    Recent_Counter CU_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
-    Recent_Counter CO_Counter(2*cycle/3, hash_number * row_length, row_length, hash_number, field_num);
+    // Recent_Counter CU_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
+    // Recent_Counter CO_Counter(2*cycle/3, hash_number * row_length, row_length, hash_number, field_num);
 
     Data *dat = new Data[cycle + 1];
 
@@ -84,8 +86,8 @@ void Read_File(int argc, char* argv[]){
             mp[packet] += 1;
 
         int CM_guess = CM_Counter.Query(packet.str, DATA_LEN);
-        int CU_guess = CU_Counter.Query(packet.str, DATA_LEN);
-        int CO_guess = CO_Counter.CO_Query(packet.str, DATA_LEN);
+        // int CU_guess = CU_Counter.Query(packet.str, DATA_LEN);
+        // int CO_guess = CO_Counter.CO_Query(packet.str, DATA_LEN);
 
         double real = mp[packet];
 
