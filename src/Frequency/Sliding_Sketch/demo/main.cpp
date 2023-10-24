@@ -92,23 +92,23 @@ void Read_File(int argc, char* argv[]){
         double real = mp[packet];
 
         int CM_sub = CM_guess - real;
-        int CU_sub = CU_guess - real;
-        int CO_sub = CO_guess - real;
+        // int CU_sub = CU_guess - real;
+        // int CO_sub = CO_guess - real;
 
         CM_dif += abs(CM_sub);
-        CU_dif += abs(CU_sub);
-        CO_dif += abs(CO_sub);
+        // CU_dif += abs(CU_sub);
+        // CO_dif += abs(CO_sub);
 
         CM_re = CM_re + (double)abs(CM_sub) / real;
-        CU_re = CU_re + (double)abs(CU_sub) / real;
-        CO_re = CO_re + (double)abs(CO_sub) / real;
+        // CU_re = CU_re + (double)abs(CU_sub) / real;
+        // CO_re = CO_re + (double)abs(CO_sub) / real;
 
         CM_ae += abs(CM_sub);
-        CU_ae += abs(CU_sub);
-        CO_ae += abs(CO_sub);
+        // CU_ae += abs(CU_sub);
+        // CO_ae += abs(CO_sub);
 
         if(num%cycle ==0){
-        // cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
+        cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
         // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
         // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }
