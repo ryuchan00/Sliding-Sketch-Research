@@ -34,17 +34,18 @@ Recent_Counter::Recent_Counter(int c, int l, int _row_length, int _hash_numberbe
 
 Recent_Counter::~Recent_Counter(){
     delete [] counter;
-    // delete [] counter2;
 }
 
 void Recent_Counter::CM_Init(const unsigned char* str, int length, unsigned long long int num){
     unsigned int position;
+    // 自信のインスタンスのメンバ変数clock_posが，速さ1か速さ1.1の領域のどちらを参照しているか判定する
+    // 速さ1の領域を参照している場合は，Clock_Go(num * step)をcall
+    // 速さ1.1の領域を参照している場合は，Clock_Go(num * step * 1.1)をcall
     Clock_Go(num * step);
     for(int i = 0;i < hash_number;++i){
         position = Hash(str, i, length) % row_length + i * row_length;
-        // yesterdayかtodayかの判定か
+        // yesterdayかtodayかの判定
         counter[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
-        // counter2[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
     }
 }
 
@@ -138,6 +139,21 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         clock_pos = (clock_pos + 1) % len;
         if(clock_pos == 0){
             // field_numのどちらがTodayですか？
+            cycle_num = (cycle_num + 1) % field_num;
+        }
+    }
+}
+
+void Recent_Counter::Clock_Go(unsigned long long int num){
+    // counterのclock_posを見て，今スケッチのどの場所を見ているか判定する
+    // もし速度1のスケッチを参照している状態であればそのまま処理する
+    // そうでなければ，numの値を1.1倍して，last_timeをnumに追従させる
+    // そうすることによって，スケッチの更新速度を1.1として表現できる？
+    // したがってColock_Goをcallするときの引数numを調整してあげる必要がある
+    for(;last_time < num;++last_time){
+        counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
+        clock_pos = (clock_pos + 1) % len;
+        if(clock_pos == 0){
             cycle_num = (cycle_num + 1) % field_num;
         }
     }
