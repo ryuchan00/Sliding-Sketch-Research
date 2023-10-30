@@ -12,10 +12,12 @@
 class Recent_Sketch{
 public :
     unsigned int clock_pos;
+    float clock_pos2;
     unsigned int len;
     // 更新周期
     unsigned int step;
     unsigned int cycle_num;
+    unsigned int cycle_num2;
     int row_length;
     int hash_number;
     int field_num;
@@ -25,9 +27,19 @@ public :
     // l = スケッチの全体のサイズ
     Recent_Sketch(unsigned int c, unsigned int l, int _row_length, int _hash_number, int _field_num):
         len(l),step(l*(_field_num-1)/c),row_length(_row_length),hash_number(_hash_number),field_num(_field_num){
+        // clock_pos2 = 0;
+        // cycle_num2 = 0;
+        // 本当にこの実装で大丈夫か？という懸念もある
+        // タイマーにスケッチを持たせる方法も存在する
+        // その場合は、処理は人間に理解しやすい方法になるが
+        // このプログラムに対してかなりの変更をくわえる必要がある。
+        // 変更が多くなるので、現時点ではあまり現実的ではない
+        // 懸念事項として9.9から11にとんだときに、10は常に使われない状態になる
         clock_pos = 0;
+        clock_pos2 = 0;
         last_time = 0;
         cycle_num = 0;
+        cycle_num2 = 0;
     }
     int Mid(int *num);
 };

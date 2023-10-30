@@ -120,88 +120,27 @@ int Recent_Counter::CO_Query(const unsigned char *str, int length){
 }
 
 void Recent_Counter::Clock_Go(unsigned long long int num){
-    // coutで細かい値を見ていく
-    // 最初はスケッチの値を小さくするなどして工夫してみる
-    
-    // std::cout << "last_time" << last_time << std::endl;
-    for(;last_time < num;++last_time){
-        // int display_flag = 0;
-        // std::cout << "clock_pos= " << clock_pos << std::endl;
-        // if (counter[clock_pos].count[0] != 0 && counter[clock_pos].count[1] != 0) {
-        //     std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << " => ";
-        //     display_flag = 1;
-        // }
-        counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
-        // if (display_flag == 1) {
-        //     std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << std::endl;
-        // }
-        
-        clock_pos = (clock_pos + 1) % len;
-        if(clock_pos == 0){
-            // field_numのどちらがTodayですか？
-            cycle_num = (cycle_num + 1) % field_num;
-        }
-    }
-}
-
-void Recent_Counter::Clock_Go(unsigned long long int num){
     // counterのclock_posを見て，今スケッチのどの場所を見ているか判定する
     // もし速度1のスケッチを参照している状態であればそのまま処理する
     // そうでなければ，numの値を1.1倍して，last_timeをnumに追従させる
     // そうすることによって，スケッチの更新速度を1.1として表現できる？
     // したがってColock_Goをcallするときの引数numを調整してあげる必要がある
     for(;last_time < num;++last_time){
+        // 以下の2つの行を2倍してあげればいけるか？
+        // counter[clock_pos2].count[(cycle_num2 + 1) % field_num] = 0;
+        // clock_pos2 = (clock_pos2 + 1.1) % len;
+        // clock_pos2がdouble or floatになったときにcounterの添え字intなので飛ぶ
+        // 以下のような事が発生する
+        // if (clock_pos == even) {このときに速度1.1のcounterを参照するので処理をしない}
+        // counterのスケッチの速度による領域をevenとodd
         counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
         clock_pos = (clock_pos + 1) % len;
-        if(clock_pos == 0){
-            cycle_num = (cycle_num + 1) % field_num;
-        }
-    }
-}
 
-void Recent_Counter::Clock_Go(unsigned long long int num, bool counter2_flag){
-    // coutで細かい値を見ていく
-    // 最初はスケッチの値を小さくするなどして工夫してみる
-    
-    std::cout << "last_time" << last_time << std::endl;
-    for(;last_time < num;++last_time){
-        int display_flag = 0;
-        // std::cout << "clock_pos= " << clock_pos << std::endl;
-        if (counter2_flag == false) {
-            if (counter[clock_pos].count[0] != 0 && counter[clock_pos].count[1] != 0) {
-                std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << " => ";
-                display_flag = 1;
-            }
-            counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
-            if (display_flag == 1) {
-                std::cout << counter[clock_pos].count[0] << " " << counter[clock_pos].count[1] << std::endl;
-            }
-        } else {
-            if (counter2[clock_pos].count[0] != 0 && counter2[clock_pos].count[1] != 0) {
-                std::cout << counter2[clock_pos].count[0] << " " << counter2[clock_pos].count[1] << " => ";
-                display_flag = 1;
-            }
-            counter2[clock_pos].count[(cycle_num + 1) % field_num] = 0;
-            if (display_flag == 1) {
-                std::cout << counter2[clock_pos].count[0] << " " << counter2[clock_pos].count[1] << std::endl;
-            }
-        }
-        clock_pos = (clock_pos + 1) % len;
+        counter[clock_pos2].count[(cycle_num2 + 1.1) % field_num] = 0;
+        clock_pos2 = (clock_pos2 + 1) % len;
+
         if(clock_pos == 0){
-            // field_numのどちらがTodayですか？
             cycle_num = (cycle_num + 1) % field_num;
         }
     }
-    // std::cout << "len,field_num:";
-    // std::cout << std::endl;
-    // std::cout << len << " ";
-    // std::cout << field_num;
-    // std::cout << std::endl;
-    // for(int i = 0;i < field_num;++i){
-        // for(int j = 0;j < field_num;++j){
-            // std::cout << counter[i].count[j] << " ";
-        // }
-        // std::cout << counter[clock_pos].count[i] << std::endl;
-    // }
-    
 }
