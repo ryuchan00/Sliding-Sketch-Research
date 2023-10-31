@@ -60,7 +60,7 @@ void Read_File(int argc, char* argv[]){
 
     while(fread(packet.str, DATA_LEN, 1, file) > 0)
     {
-        cout << "INPUT: " << packet.str << endl;
+        // cout << "INPUT: " << packet.str << endl;
 
         if(num > input_num_max){
             break;

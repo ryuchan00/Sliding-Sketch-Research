@@ -1,5 +1,7 @@
 #include "clock.h"
 
+#include <math.h>                                                               
+
 struct Place{
     unsigned int serial;
     unsigned int pos;
@@ -20,15 +22,11 @@ int Recent_Sketch::Mid(int *num){
 Recent_Counter::Recent_Counter(int c, int l, int _row_length, int _hash_numberber, int _field_num):
     Recent_Sketch(c,l,_row_length,_hash_numberber,_field_num){
     counter = new Unit [l];
-    counter2 = new Unit [l];
     field_num = _field_num;
     for(int i = 0; i < l; i++){
         counter[i].count = new int[_field_num];
         counter[i].field_num = _field_num;
-        counter2[i].count = new int[_field_num];
-        counter2[i].field_num = _field_num;
         memset(counter[i].count, 0, _field_num * sizeof(int));
-        memset(counter2[i].count, 0, _field_num * sizeof(int));
     }
 }
 
@@ -46,6 +44,7 @@ void Recent_Counter::CM_Init(const unsigned char* str, int length, unsigned long
         position = Hash(str, i, length) % row_length + i * row_length;
         // yesterdayかtodayかの判定
         counter[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
+        counter[position].count[(cycle_num2 + (position < (int)clock_pos2)) % field_num] += 1;
     }
 }
 
@@ -136,11 +135,16 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
         clock_pos = (clock_pos + 1) % len;
 
-        counter[clock_pos2].count[(cycle_num2 + 1.1) % field_num] = 0;
-        clock_pos2 = (clock_pos2 + 1) % len;
+        int int_clock_pos2 = floor(clock_pos2);
+        int int_cycle_num2 = floor(cycle_num2);
+        counter[(int)clock_pos2].count[(cycle_num2 + 1) % field_num] = 0;
+        clock_pos2 = fmodf(clock_pos2 + 1.1, len);
 
         if(clock_pos == 0){
             cycle_num = (cycle_num + 1) % field_num;
+        }
+        if((int)clock_pos2 == 0){
+            cycle_num2 = (cycle_num2 + 1) % field_num;
         }
     }
 }
