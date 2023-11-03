@@ -43,8 +43,12 @@ void Recent_Counter::CM_Init(const unsigned char* str, int length, unsigned long
     for(int i = 0;i < hash_number;++i){
         position = Hash(str, i, length) % row_length + i * row_length;
         // yesterdayかtodayかの判定
-        counter[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
-        counter[position].count[(cycle_num2 + (position < (int)clock_pos2)) % field_num] += 1;
+        if (position % 2 == 0) {
+            counter[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
+        } else {
+            // 飛んだケースは存在するか？
+            counter[position].count[(cycle_num2 + (position < (int)clock_pos2)) % field_num] += 1;
+        }
     }
 }
 
