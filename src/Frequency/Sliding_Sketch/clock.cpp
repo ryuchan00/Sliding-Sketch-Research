@@ -132,17 +132,18 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         // 以下のような事が発生する
         // if (clock_pos == even) {このときに速度1.1のcounterを参照するので処理をしない}
         // counterのスケッチの速度による領域をevenとodd
-        counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
+        if (clock_pos % 2 == 0) {
+            counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
+        }
         clock_pos = (clock_pos + 1) % len;
-
-        int int_clock_pos2 = floor(clock_pos2);
-        int int_cycle_num2 = floor(cycle_num2);
-        counter[(int)clock_pos2].count[(cycle_num2 + 1) % field_num] = 0;
-        clock_pos2 = fmodf(clock_pos2 + 1.1, len);
-
         if(clock_pos == 0){
             cycle_num = (cycle_num + 1) % field_num;
         }
+
+        if ((int)clock_pos2 % 2 != 0) {
+            counter[(int)clock_pos2].count[(cycle_num2 + 1) % field_num] = 0;
+        }
+        clock_pos2 = fmodf(clock_pos2 + 1.1, len);
         if((int)clock_pos2 == 0){
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
