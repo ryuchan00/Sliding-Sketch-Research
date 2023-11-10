@@ -23,21 +23,24 @@ unordered_map<Data, int, My_Hash> mp;
 //argv[9]:field
 
 void Read_File(int argc, char* argv[]){
-    int cycle = 50000;
-    // int cycle = 5;
+    // int cycle = 50000;
+    // int cycle = 50000;
+    int cycle = 8;
     // 所持しているハッシュ関数
-    int hash_number = 10;
-    // int hash_number = 2;
-    // double mymemory  = 1;
+    // int hash_number = 10;
+    int hash_number = 2;    // テスト用
+    double mymemory  = 1;
     // double mymemory  = 1;
     // double mymemory  = 2;
-    double mymemory  = 3;
-    int input_num_max = 500000;
+    // double mymemory  = 3;
+    // int input_num_max = 500000;
+    int input_num_max = 20;
     // int input_num_max = 50;
     // バケットの数(today or yesterday)
     int field_num = 2;
     // 衝突の関係する
-    int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
+    // int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
+    int row_length = 4;    // テスト用
     // hash_number * row_lengthはスケッチ全体のサイズ
     // 
     Recent_Counter CM_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
@@ -108,7 +111,7 @@ void Read_File(int argc, char* argv[]){
         // CO_ae += abs(CO_sub);
 
         if(num%cycle ==0){
-        cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
+        // cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
         // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
         // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }

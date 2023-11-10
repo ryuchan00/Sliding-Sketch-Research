@@ -23,6 +23,7 @@ Recent_Counter::Recent_Counter(int c, int l, int _row_length, int _hash_numberbe
     Recent_Sketch(c,l,_row_length,_hash_numberber,_field_num){
     counter = new Unit [l];
     field_num = _field_num;
+    row_length = _row_length;
     for(int i = 0; i < l; i++){
         counter[i].count = new int[_field_num];
         counter[i].field_num = _field_num;
@@ -151,5 +152,14 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         if((int)clock_pos2 == 0){
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
+        std::cout << "num: " << num << std::endl;
+        for(int i=0;i < len;i++) {
+            if (i % row_length == 0) {
+                std::cout << std::endl;
+            }
+            std::cout << "(" << counter[i].count[0] << "," << counter[i].count[1] << ") ";
+            
+        }
+        std::cout << std::endl;
     }
 }
