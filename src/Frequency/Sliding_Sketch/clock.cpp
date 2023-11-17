@@ -60,9 +60,9 @@ void Recent_Counter::CU_Init(const unsigned char* str, int length, unsigned long
     int k = clock_pos / row_length;
     // ここでclock_posを更新している
     Clock_Go(num * step);
-    // k * row_length は多分オフセットかな
+    // k * row_length は多分オフセット
     unsigned int position = Hash(str, k ,length) % row_length + k * row_length;
-    // yesterdayかtodayかの判定か，違うかな？
+    // yesterdayかtodayかの判定
     if(position < clock_pos){
         k = (k + 1) % hash_number;
         position = Hash(str, k ,length) % row_length + k * row_length;

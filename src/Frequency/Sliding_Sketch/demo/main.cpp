@@ -34,7 +34,7 @@ void Read_File(int argc, char* argv[]){
     // double mymemory  = 2;
     // double mymemory  = 3;
     // int input_num_max = 500000;
-    int input_num_max = 20;
+    int input_num_max = 40;
     // int input_num_max = 50;
     // バケットの数(today or yesterday)
     int field_num = 2;
@@ -111,7 +111,7 @@ void Read_File(int argc, char* argv[]){
         // CO_ae += abs(CO_sub);
 
         if(num%cycle ==0){
-        // cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
+        cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
         // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
         // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }
