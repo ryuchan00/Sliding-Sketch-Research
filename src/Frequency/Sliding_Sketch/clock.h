@@ -18,6 +18,7 @@ public :
     unsigned int step;
     unsigned int cycle_num;
     unsigned int cycle_num2;
+    unsigned int prev_clock_pos2;
     int row_length;
     int hash_number;
     int field_num;
@@ -40,6 +41,7 @@ public :
         last_time = 0;
         cycle_num = 0;
         cycle_num2 = 0;
+        prev_clock_pos2 = 0;
     }
     int Mid(int *num);
 };
