@@ -111,7 +111,7 @@ void Read_File(int argc, char* argv[]){
         // CO_ae += abs(CO_sub);
 
         if(num%cycle ==0){
-        cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
+        // cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
         // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
         // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }

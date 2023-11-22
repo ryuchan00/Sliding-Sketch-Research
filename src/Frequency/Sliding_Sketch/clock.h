@@ -12,13 +12,13 @@
 class Recent_Sketch{
 public :
     unsigned int clock_pos;
-    float clock_pos2;
+    double clock_pos2;
+    double prev_clock_pos2;
     unsigned int len;
     // 更新周期
     unsigned int step;
     unsigned int cycle_num;
     unsigned int cycle_num2;
-    unsigned int prev_clock_pos2;
     int row_length;
     int hash_number;
     int field_num;
