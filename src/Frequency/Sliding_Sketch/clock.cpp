@@ -23,6 +23,7 @@ Recent_Counter::Recent_Counter(int c, int l, int _row_length, int _hash_numberbe
     Recent_Sketch(c,l,_row_length,_hash_numberber,_field_num){
     counter = new Unit [l];
     field_num = _field_num;
+    row_length = _row_length;
     for(int i = 0; i < l; i++){
         counter[i].count = new int[_field_num];
         counter[i].field_num = _field_num;
@@ -42,6 +43,7 @@ void Recent_Counter::CM_Init(const unsigned char* str, int length, unsigned long
     Clock_Go(num * step);
     for(int i = 0;i < hash_number;++i){
         position = Hash(str, i, length) % row_length + i * row_length;
+        std::cout << "i: " << i << " position: " << position << std::endl;
         // yesterdayかtodayかの判定
         if (position % 2 == 0) {
             counter[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
@@ -58,9 +60,9 @@ void Recent_Counter::CU_Init(const unsigned char* str, int length, unsigned long
     int k = clock_pos / row_length;
     // ここでclock_posを更新している
     Clock_Go(num * step);
-    // k * row_length は多分オフセットかな
+    // k * row_length は多分オフセット
     unsigned int position = Hash(str, k ,length) % row_length + k * row_length;
-    // yesterdayかtodayかの判定か，違うかな？
+    // yesterdayかtodayかの判定
     if(position < clock_pos){
         k = (k + 1) % hash_number;
         position = Hash(str, k ,length) % row_length + k * row_length;
@@ -136,6 +138,9 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         // 以下のような事が発生する
         // if (clock_pos == even) {このときに速度1.1のcounterを参照するので処理をしない}
         // counterのスケッチの速度による領域をevenとodd
+        std::cout << "num: " << num << " clock_pos: " << clock_pos << " clock_pos2: " << clock_pos2 << std::endl;
+        std::cout << "cycle_num: " << cycle_num << " cycle_num2: " << cycle_num2 << std::endl;
+
         if (clock_pos % 2 == 0) {
             counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
         }
@@ -151,5 +156,17 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         if((int)clock_pos2 == 0){
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
+        
+        
+        for(int i=0;i < len;i++) {
+            if (i % row_length == 0 && i != 0) {
+                std::cout << std::endl;
+            }
+            std::cout << "(" << counter[i].count[0] << "," << counter[i].count[1] << ") ";
+            
+        }
+                     std::cout <<  std::endl;
+        std::cout << "-------------" << std::endl;  
+        std::cout <<  std::endl;
     }
 }
