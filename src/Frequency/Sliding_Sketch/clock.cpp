@@ -152,16 +152,35 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         if ((int)clock_pos2 % 2 != 0) {
             counter[(int)clock_pos2].count[(cycle_num2 + 1) % field_num] = 0;
         }
-        if ((int)(clock_pos2 - prev_clock_pos2) > 1 || ((prev_clock_pos2 > clock_pos2) && (clock_pos2 < 2))) {
-
+        if ((int)(clock_pos2 - prev_clock_pos2) > 1) {
+            int n = (int)(clock_pos2 - prev_clock_pos2);
+            for(int i=0;i<n;i++) {
+                int pos = prev_clock_pos2 + i + 1; 
+                if ((int)pos % 2 != 0) {
+                    counter[(int)pos].count[(cycle_num2 + 1) % field_num] = 0;
+                }
+            }
+        }
+        if ((prev_clock_pos2 > clock_pos2) && (prev_clock_pos2 - clock_pos2 + len > 1)) {
+            int n = (int)(prev_clock_pos2 - clock_pos2 + len);
+            for(int i=0;i<n;i++) {
+                int pos = (int)(prev_clock_pos2 + i + 1) % len; 
+                if ((int)pos % 2 != 0) {
+                    counter[(int)pos].count[(cycle_num2 + 1) % field_num] = 0;
+                }
+            }
         }
         prev_clock_pos2 = clock_pos2;
         clock_pos2 = fmodf(clock_pos2 + 1.1, len);
         if((int)clock_pos2 == 0){
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
+        // 0を飛ばした
+        if ((prev_clock_pos2 > clock_pos2) && (prev_clock_pos2 - clock_pos2 + len > 1)) {
+            cycle_num2 = (cycle_num2 + 1) % field_num;
+        }
         
-        for(int i=0;i < len;i++) {
+        for(int i=0;i<len;i++) {
             if (i % row_length == 0 && i != 0) {
                 std::cout << std::endl;
             }
