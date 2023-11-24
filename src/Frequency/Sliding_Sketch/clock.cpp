@@ -153,11 +153,12 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
             counter[(int)clock_pos2].count[(cycle_num2 + 1) % field_num] = 0;
         }
         if ((int)(clock_pos2 - prev_clock_pos2) > 1 || ((prev_clock_pos2 > clock_pos2) && (clock_pos2 < 2))) {
-
+            counter[(int)clock_pos2].count[(cycle_num2 + 1) % field_num] = 0;
         }
+
         prev_clock_pos2 = clock_pos2;
         clock_pos2 = fmodf(clock_pos2 + 1.1, len);
-        if((int)clock_pos2 == 0){
+        if((int)clock_pos2 == 0 || ((prev_clock_pos2 > clock_pos2) && (clock_pos2 < 2))){
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
         
