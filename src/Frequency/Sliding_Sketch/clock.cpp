@@ -162,11 +162,15 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
                 }
             }
         }
-        if ((prev_clock_pos2 > clock_pos2) && (prev_clock_pos2 - clock_pos2 + len > 1)) {
-            int n = (int)(prev_clock_pos2 - clock_pos2 + len);
+        if ((prev_clock_pos2 > clock_pos2) && ((int)prev_clock_pos2 - ((int)clock_pos2 + len - 1) > 1)) {
+            int n = ((int)prev_clock_pos2 - ((int)clock_pos2 + len - 1));
+            // std::cout << "len: " << len << std::endl;
+            // std::cout << "prev_pos: " << prev_clock_pos2 << std::endl;
+            // std::cout << "n: " << n << std::endl;
             for(int i=0;i<n;i++) {
                 int pos = (int)(prev_clock_pos2 + i + 1) % len; 
-                if ((int)pos % 2 != 0) {
+                if (pos % 2 != 0) {
+                    // std::cout << "pos: " << pos << std::endl;
                     counter[(int)pos].count[(cycle_num2 + 1) % field_num] = 0;
                 }
             }
@@ -177,8 +181,7 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         if((int)clock_pos2 == 0 || ((prev_clock_pos2 > clock_pos2) && (clock_pos2 < 2))){
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
-        // 0を飛ばした
-        if ((prev_clock_pos2 > clock_pos2) && (prev_clock_pos2 - clock_pos2 + len > 1)) {
+        if ((prev_clock_pos2 > clock_pos2) && (prev_clock_pos2 - (clock_pos2 + len - 1) > 1)) {
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
         
