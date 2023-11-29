@@ -186,7 +186,9 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
 
         prev_clock_pos2 = clock_pos2;
         clock_pos2 = fmodf(clock_pos2 + 1.1, len);
-        if((int)clock_pos2 == 0 || ((prev_clock_pos2 > clock_pos2) && (clock_pos2 < 2))){
+        c_p2 = (int)clock_pos2;
+        p_p2 = (int)prev_clock_pos2;
+        if(c_p2 == 0 || ((p_p2 > c_p2) && (c_p2 < 2))){
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
         // if ((prev_clock_pos2 > clock_pos2) && (prev_clock_pos2 - (clock_pos2 + len - 1) > 1)) {
