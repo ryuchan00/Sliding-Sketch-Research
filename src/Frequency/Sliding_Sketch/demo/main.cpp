@@ -34,7 +34,7 @@ void Read_File(int argc, char* argv[]){
     // double mymemory  = 2;
     // double mymemory  = 3;
     // int input_num_max = 500000;
-    int input_num_max = 40;
+    int input_num_max = 80;
     // int input_num_max = 50;
     // バケットの数(today or yesterday)
     int field_num = 2;
