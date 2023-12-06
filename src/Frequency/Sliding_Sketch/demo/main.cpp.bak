@@ -7,7 +7,6 @@
 #include "../data.h"
 
 
-
 using namespace std;
 unordered_map<Data, int, My_Hash> mp;
 
@@ -57,7 +56,6 @@ void Read_File(int argc, char* argv[]){
 
 
     // cout <<"Sliding Sketch,Arrivals,ARE"<<endl;
-    cout << "num,diff " << endl;
 
     while(fread(packet.str, DATA_LEN, 1, file) > 0)
     {
@@ -93,7 +91,6 @@ void Read_File(int argc, char* argv[]){
         double real = mp[packet];
 
         int CM_sub = CM_guess - real;
-        double diff = (double)CM_guess - real;
         // int CU_sub = CU_guess - real;
         // int CO_sub = CO_guess - real;
 
@@ -110,13 +107,9 @@ void Read_File(int argc, char* argv[]){
         // CO_ae += abs(CO_sub);
 
         if(num%cycle ==0){
-        // cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
+        cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
         // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
         // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
-        }
-
-        if (input_num_max - 50 < num) {
-            cout << num << "," << diff << endl;
         }
 
 

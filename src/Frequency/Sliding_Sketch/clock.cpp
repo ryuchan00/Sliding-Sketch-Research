@@ -43,7 +43,7 @@ void Recent_Counter::CM_Init(const unsigned char* str, int length, unsigned long
     Clock_Go(num * step);
     for(int i = 0;i < hash_number;++i){
         position = Hash(str, i, length) % row_length + i * row_length;
-        std::cout << "i: " << i << " position: " << position << std::endl;
+        // std::cout << "i: " << i << " position: " << position << std::endl;
         // yesterdayかtodayかの判定
         if (position % 2 == 0) {
             counter[position].count[(cycle_num + (position < clock_pos)) % field_num] += 1;
@@ -138,8 +138,8 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         // 以下のような事が発生する
         // if (clock_pos == even) {このときに速度1.1のcounterを参照するので処理をしない}
         // counterのスケッチの速度による領域をevenとodd
-        std::cout << "num: " << num << " clock_pos: " << clock_pos << " clock_pos2: " << clock_pos2 << std::endl;
-        std::cout << "cycle_num: " << cycle_num << " cycle_num2: " << cycle_num2 << std::endl;
+        // std::cout << "num: " << num << " clock_pos: " << clock_pos << " clock_pos2: " << clock_pos2 << std::endl;
+        // std::cout << "cycle_num: " << cycle_num << " cycle_num2: " << cycle_num2 << std::endl;
 
         if (clock_pos % 2 == 0) {
             counter[clock_pos].count[(cycle_num + 1) % field_num] = 0;
@@ -169,20 +169,6 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
                 counter[pos].count[(cycle_num2 + 1) % field_num] = 0;
             }
         }
-        // }
-        // if ((prev_clock_pos2 > clock_pos2) && ((int)prev_clock_pos2 - ((int)clock_pos2 + len - 1) > 1)) {
-        //     int n = ((int)prev_clock_pos2 - ((int)clock_pos2 + len - 1));
-        //     // std::cout << "len: " << len << std::endl;
-        //     // std::cout << "prev_pos: " << prev_clock_pos2 << std::endl;
-        //     // std::cout << "n: " << n << std::endl;
-        //     for(int i=0;i<n;i++) {
-        //         int pos = (int)(prev_clock_pos2 + i + 1) % len; 
-        //         if (pos % 2 != 0) {
-        //             // std::cout << "pos: " << pos << std::endl;
-        //             counter[(int)pos].count[(cycle_num2 + 1) % field_num] = 0;
-        //         }
-        //     }
-        // }
 
         prev_clock_pos2 = clock_pos2;
         clock_pos2 = fmodf(clock_pos2 + 1.1, len);
@@ -195,15 +181,15 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         //     cycle_num2 = (cycle_num2 + 1) % field_num;
         // }
         
-        for(int i=0;i<len;i++) {
-            if (i % row_length == 0 && i != 0) {
-                std::cout << std::endl;
-            }
-            std::cout << "(" << counter[i].count[0] << "," << counter[i].count[1] << ") ";
+        // for(int i=0;i<len;i++) {
+        //     if (i % row_length == 0 && i != 0) {
+        //         std::cout << std::endl;
+        //     }
+        //     std::cout << "(" << counter[i].count[0] << "," << counter[i].count[1] << ") ";
             
-        }
-                     std::cout <<  std::endl;
-        std::cout << "-------------" << std::endl;  
-        std::cout <<  std::endl;
+        // }
+        // std::cout <<  std::endl;
+        // std::cout << "-------------" << std::endl;  
+        // std::cout <<  std::endl;
     }
 }
