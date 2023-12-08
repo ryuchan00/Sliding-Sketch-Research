@@ -86,7 +86,13 @@ void Read_File(int argc, char* argv[]){
         else
             mp[packet] += 1;
 
-        int CM_guess = CM_Counter.Query(packet.str, DATA_LEN);
+        int CM_guess;
+        if (input_num_max - 50 < num) {
+            CM_guess = CM_Counter.Query(packet.str, DATA_LEN, true);
+        } else {
+            CM_guess = CM_Counter.Query(packet.str, DATA_LEN, false);
+        }
+        // int CM_guess = CM_Counter.Query(packet.str, DATA_LEN);
         // int CU_guess = CU_Counter.Query(packet.str, DATA_LEN);
         // int CO_guess = CO_Counter.CO_Query(packet.str, DATA_LEN);
 
@@ -115,6 +121,8 @@ void Read_File(int argc, char* argv[]){
         // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }
 
+        // 終わり50個前から出力して、over estimationかunder estimationかを確認する
+        // todo: clock_pos1かclock_pos2のどちらの管理区域か出力する必要がありそう
         if (input_num_max - 50 < num) {
             cout << num << "," << diff << endl;
         }

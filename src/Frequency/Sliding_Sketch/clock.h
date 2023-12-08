@@ -72,7 +72,7 @@ public:
     void CO_Init(const unsigned char* str, int length, unsigned long long int num);//Count Sketch update an item
     void CU_Init(const unsigned char* str, int length, unsigned long long int num);//CU Sketch update an item
     int CO_Query(const unsigned char* str, int length);//Count Sketch query an item
-    unsigned int Query(const unsigned char* str, int length);//CM(CU) Sketch update an item
+    unsigned int Query(const unsigned char* str, int length, bool display_min_pos);//CM(CU) Sketch update an item
 };
 
 #endif // CLOCK_H

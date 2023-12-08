@@ -80,11 +80,27 @@ void Recent_Counter::CU_Init(const unsigned char* str, int length, unsigned long
     }
 }
 
-unsigned int Recent_Counter::Query(const unsigned char* str, int length){
+unsigned int Recent_Counter::Query(const unsigned char* str, int length, bool display_min_pos = false){
     unsigned int min_num = 0x7fffffff;
+    unsigned int prev_min_num = 0x7fffffff;
+    int min_pos = 0;
 
-    for(int i = 0;i < hash_number;++i)
+    for(int i = 0;i < hash_number;++i) {
+        int pos = Hash(str, i, length) % row_length + i * row_length;
         min_num = min(counter[Hash(str, i, length) % row_length + i * row_length].Total(), min_num);
+        if (min_num < prev_min_num || min_num == prev_min_num) {
+            min_pos = pos;
+        }
+        prev_min_num = min_num;
+    }
+    if (display_min_pos) {
+        char* clock_pos_str = "clock_pos1";
+        if (min_pos % 2 != 0) {
+            clock_pos_str = "clock_pos2";
+
+        }
+        std::cout << "min_pos: " << clock_pos_str << " ";
+    }
 
     return min_num;
 }
@@ -125,19 +141,7 @@ int Recent_Counter::CO_Query(const unsigned char *str, int length){
 }
 
 void Recent_Counter::Clock_Go(unsigned long long int num){
-    // counterのclock_posを見て，今スケッチのどの場所を見ているか判定する
-    // もし速度1のスケッチを参照している状態であればそのまま処理する
-    // そうでなければ，numの値を1.1倍して，last_timeをnumに追従させる
-    // そうすることによって，スケッチの更新速度を1.1として表現できる？
-    // したがってColock_Goをcallするときの引数numを調整してあげる必要がある
     for(;last_time < num;++last_time){
-        // 以下の2つの行を2倍してあげればいけるか？
-        // counter[clock_pos2].count[(cycle_num2 + 1) % field_num] = 0;
-        // clock_pos2 = (clock_pos2 + 1.1) % len;
-        // clock_pos2がdouble or floatになったときにcounterの添え字intなので飛ぶ
-        // 以下のような事が発生する
-        // if (clock_pos == even) {このときに速度1.1のcounterを参照するので処理をしない}
-        // counterのスケッチの速度による領域をevenとodd
         // std::cout << "num: " << num << " clock_pos: " << clock_pos << " clock_pos2: " << clock_pos2 << std::endl;
         // std::cout << "cycle_num: " << cycle_num << " cycle_num2: " << cycle_num2 << std::endl;
 
@@ -149,9 +153,6 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
             cycle_num = (cycle_num + 1) % field_num;
         }
 
-        // if ((int)clock_pos2 % 2 != 0) {
-        //     counter[(int)clock_pos2].count[(cycle_num2 + 1) % field_num] = 0;
-        // }
         int c_p2 = (int)clock_pos2;
         int p_p2 = (int)prev_clock_pos2;
         // 正負で場合分けする
