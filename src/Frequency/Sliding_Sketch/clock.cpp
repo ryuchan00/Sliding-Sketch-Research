@@ -87,7 +87,7 @@ unsigned int Recent_Counter::Query(const unsigned char* str, int length, bool di
 
     for(int i = 0;i < hash_number;++i) {
         int pos = Hash(str, i, length) % row_length + i * row_length;
-        min_num = min(counter[Hash(str, i, length) % row_length + i * row_length].Total(), min_num);
+        min_num = min(counter[pos].Total(), min_num);
         if (min_num < prev_min_num || min_num == prev_min_num) {
             min_pos = pos;
         }
@@ -99,7 +99,7 @@ unsigned int Recent_Counter::Query(const unsigned char* str, int length, bool di
             clock_pos_str = "clock_pos2";
 
         }
-        std::cout << "min_pos: " << clock_pos_str << " ";
+        // std::cout << "min_pos: " << clock_pos_str << " ";
     }
 
     return min_num;

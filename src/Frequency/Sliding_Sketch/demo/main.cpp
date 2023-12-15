@@ -51,13 +51,13 @@ void Read_File(int argc, char* argv[]){
     double CM_ae = 0,  CU_ae = 0,  CO_ae = 0;
     double CM_re = 0,  CU_re = 0,  CO_re = 0;
 
-    // FILE* file = fopen("../../../../data/formatted00.dat","rb");
-    FILE* file = fopen("../../../../data/web_page2.dat","rb");
+    FILE* file = fopen("../../../../data/formatted00.dat","rb");
+    // FILE* file = fopen("../../../../data/web_page2.dat","rb");
     Data packet;
 
 
-    // cout <<"Sliding Sketch,Arrivals,ARE"<<endl;
-    cout << "num,diff " << endl;
+    cout <<"Sliding Sketch,Arrivals,ARE"<<endl;
+    // cout << "num,diff,guess,real " << endl;
 
     while(fread(packet.str, DATA_LEN, 1, file) > 0)
     {
@@ -116,16 +116,16 @@ void Read_File(int argc, char* argv[]){
         // CO_ae += abs(CO_sub);
 
         if(num%cycle ==0){
-        // cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
+        cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
         // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
         // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }
 
         // 終わり50個前から出力して、over estimationかunder estimationかを確認する
         // todo: clock_pos1かclock_pos2のどちらの管理区域か出力する必要がありそう
-        if (input_num_max - 50 < num) {
-            cout << num << "," << diff << endl;
-        }
+        // if (input_num_max - 50 < num) {
+        //     cout << num << "," << diff << "," << CM_guess << "," << real << endl;
+        // }
 
 
         num++;
