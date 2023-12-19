@@ -39,7 +39,7 @@ end function
 function update(j)
   # element_countのkeyを探す方法は今は線形探索で設計してみる
   target_key ← LinearSearch(element_count, j)
-  if (target_key != -1) then
+  if (target_key != -1) then # target_keyが見つかったら
     element_count[target_key].count ← element_count[target_key].count + 1
   else
     frecuency = new Frecuency{ key: j, count: 0 }
