@@ -116,7 +116,6 @@ void Recent_Counter::CO_Init(const unsigned char *str, int length, unsigned long
     }
 }
 
-
 int Recent_Counter::CO_Query(const unsigned char *str, int length){
     int* n = new int[hash_number];
     memset(n, 0, hash_number * sizeof(int));
@@ -140,6 +139,8 @@ int Recent_Counter::CO_Query(const unsigned char *str, int length){
     return Mid(n);
 }
 
+/// @brief Update Position
+/// @param num 
 void Recent_Counter::Clock_Go(unsigned long long int num){
     for(;last_time < num;++last_time){
         // std::cout << "num: " << num << " clock_pos: " << clock_pos << " clock_pos2: " << clock_pos2 << std::endl;
@@ -155,9 +156,9 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
 
         int c_p2 = (int)clock_pos2;
         int p_p2 = (int)prev_clock_pos2;
-        // 正負で場合分けする
-        // 負の場合はc_p2を書き換える？
         int n;
+        
+        // 正負で場合分けする
         if (c_p2 > p_p2) {
             n = (c_p2 - p_p2);
         } else {
@@ -178,9 +179,6 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         if(c_p2 == 0 || ((p_p2 > c_p2) && (c_p2 < 2))){
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
-        // if ((prev_clock_pos2 > clock_pos2) && (prev_clock_pos2 - (clock_pos2 + len - 1) > 1)) {
-        //     cycle_num2 = (cycle_num2 + 1) % field_num;
-        // }
         
         // for(int i=0;i<len;i++) {
         //     if (i % row_length == 0 && i != 0) {

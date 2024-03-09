@@ -34,7 +34,7 @@ void Read_File(int argc, char* argv[]){
     int input_num_max = 500000;
     // int input_num_max = 80;
     // バケットの数(today or yesterday)
-    int field_num = 2;
+    int field_num = 1;
     // 衝突の関係する
     int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
     // int row_length = 4;    // テスト用
