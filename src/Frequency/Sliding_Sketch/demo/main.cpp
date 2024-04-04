@@ -27,7 +27,7 @@ void Read_File(int argc, char* argv[]){
     int hash_number = 10;
     double mymemory  = 2;
     int input_num_max = 500000;
-    int field_num = 2;
+    int field_num = 1;
     int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
     Recent_Counter CM_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
     Recent_Counter CU_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
@@ -91,11 +91,14 @@ void Read_File(int argc, char* argv[]){
         CM_ae += abs(CM_sub);
         CU_ae += abs(CU_sub);
         CO_ae += abs(CO_sub);
+        
+        cout << "real:" << real << endl;
+        cout << "guess:" << CM_guess << endl;
 
         if(num%cycle ==0){
         cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
-        cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
-        cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
+        // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
+        // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }
 
 
@@ -103,6 +106,7 @@ void Read_File(int argc, char* argv[]){
 
         
     }
+    CM_Counter.DumpCounter();
 
 }
 
