@@ -25,7 +25,7 @@ unordered_map<Data, int, My_Hash> mp;
 void Read_File(int argc, char* argv[]){
     int cycle = 50000;
     int hash_number = 10;
-    double mymemory  = 2;
+    double mymemory  = 8;
     int input_num_max = 500000;
     int field_num = 1;
     int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
