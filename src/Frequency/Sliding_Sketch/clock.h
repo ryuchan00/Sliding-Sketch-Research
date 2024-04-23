@@ -62,8 +62,15 @@ public:
     };
     Unit* counter;
     Unit* counter2;
-    
 
+    /// @brief used for proposed method when call frecuency query
+    struct Frecuency {
+        /// @brief key of array for correction
+        int key;
+        /// @brief correction of frecuency
+        int count;
+    };
+    
     Recent_Counter(int c, int l, int _row_length, int _hash_number, int _field_num);
     ~Recent_Counter();
     void Clock_Go(unsigned long long int num);
@@ -73,6 +80,7 @@ public:
     void CU_Init(const unsigned char* str, int length, unsigned long long int num);//CU Sketch update an item
     int CO_Query(const unsigned char* str, int length);//Count Sketch query an item
     unsigned int Query(const unsigned char* str, int length, bool display_min_pos);//CM(CU) Sketch update an item
+
 };
 
 #endif // CLOCK_H
