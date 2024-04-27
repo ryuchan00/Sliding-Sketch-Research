@@ -18,7 +18,7 @@ upon <Sample | j> do # Sampleは文字列，1文字ずつ取り出してjに代�
   end for
 end upon
 
-struct Frecuency
+struct Frequency
   int key
   int count ← 0
 end struct
@@ -32,7 +32,7 @@ fucntion LinearSearch(array, target)
   end for
 end function
 
-function GetFrecuency(j)
+function GetFrequency(j)
   return min{ count[i,hash(i,j)] + element_count[j] | 1≦i≦c1 }
 end function
 
@@ -42,31 +42,31 @@ function update(j)
   if (target_key != -1) then # target_keyが見つかったら
     element_count[target_key].count ← element_count[target_key].count + 1
   else
-    frecuency = new Frecuency{ key: j, count: 0 }
-    element_count.push ← frecuency
+    Frequency = new Frequency{ key: j, count: 0 }
+    element_count.push ← Frequency
   end if
 end function
 
 function initialize_element_count # elemnt_countの値をcountへ代入する
   if (t % 更新間隔 = 0) then
     for i = 1 to c1 do
-      frecuency_confirmations[1...c2] ← 0
+      Frequency_confirmations[1...c2] ← 0
       for k = 1 to element_count.size do
-        # frecuency_confirmations[1...c2]
+        # Frequency_confirmations[1...c2]
         # キャッシュの衝突を検知したい
         key ← element_count[k].key
-        frecuency_confirmations[hash(i,key)] ← 
-            max(frecuency_confirmations[hash(i,key)], element_count[k].count)
+        Frequency_confirmations[hash(i,key)] ← 
+            max(Frequency_confirmations[hash(i,key)], element_count[k].count)
       end for
 
-      for k = 1 to frecuency_confirmations.size do
-        if (frecuency_confirmations[k] != 0) then
-          # element_count[k] ← element_count[k] + frecuency_confirmations[k]
-          count[k] ← count[k] + frecuency_confirmations[k]
-          # count[?][k] ← count[?][k] + frecuency_confirmations[k] なのでは？
+      for k = 1 to Frequency_confirmations.size do
+        if (Frequency_confirmations[k] != 0) then
+          # element_count[k] ← element_count[k] + Frequency_confirmations[k]
+          count[k] ← count[k] + Frequency_confirmations[k]
+          # count[?][k] ← count[?][k] + Frequency_confirmations[k] なのでは？
         end if
       end for
-      frecuency_confirmations[1...c2] ← 0
+      Frequency_confirmations[1...c2] ← 0
     end for
     array element_count # 再initialize
   end if

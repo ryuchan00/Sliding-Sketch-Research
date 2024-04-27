@@ -195,19 +195,36 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
     }
 }
 
-void Recent_Counter::AsyncSS_CM_Init(const unsigned char* str, int length, unsigned long long int num) {
+void Recent_Counter::DelayedInsertion_CM_Init(const unsigned char* str, int length, unsigned long long int num) {
 //   # element_countのkeyを探す方法は今は線形探索で設計してみる
 //   target_key ← LinearSearch(element_count, j)
 //   if (target_key != -1) then # target_keyが見つかったら
 //     element_count[target_key].count ← element_count[target_key].count + 1
 //   else
-//     frecuency = new Frecuency{ key: j, count: 0 }
-//     element_count.push ← frecuency
+//     Frequency = new Frequency{ key: j, count: 0 }
+//     element_count.push ← Frequency
 //   end if
-    if (clock_pos % element_count_step_ == 0) {
-        for (int i = 1; i < c1_; i++) {
-            //frecuency_confirmations_.insert
-        }
+    if (element_count_.count(str) > 0) {
+        element_count_.at(str)++;
+    } else {
+        element_count_[str] = 1;
     }
 }
 
+void Recent_Counter::Initilize_ElementCount(unsigned long long int num) {
+    for(;last_time < num;++last_time){
+        if (last_time % element_count_step_) {
+            for (int i = 0; i < c1_; i++) {
+                int frequency_confirmations[c2_];
+                
+                //for(int k = 0;k < static_cast<int>(element_count_.size()); k++) {
+                    for (auto it = element_count_.begin(); it != element_count_.end(); it++) {
+
+                    // キャッシュの衝突を検知する
+                    //const unsigned char* key = element_count_[]
+                    frequency_confirmations[Hash(it->first,i,]);
+                }
+            }
+        }
+    }
+}

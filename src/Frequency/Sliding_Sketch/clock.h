@@ -26,22 +26,6 @@ public :
     int field_num;
     unsigned long long int last_time;
 
-    /// @brief 
-    std::map<std::string, int> element_count_;
-
-    /// @brief element_count_ update time
-    int element_count_step_;
-
-    /// @brief 
-    int c1_;
-
-    /// @brief 
-    int c2_;
-
-    /// @brief 
-    std::map<std::string, int> frecuency_confirmations_;
-
-
     // c = 500000
     // l = スケッチの全体のサイズ
     Recent_Sketch(unsigned int c, unsigned int l, int _row_length, int _hash_number, int _field_num):
@@ -81,13 +65,25 @@ public:
     Unit* counter;
     Unit* counter2;
 
-    /// @brief used for proposed method when call frecuency query
-    struct Frecuency {
+    /// @brief used for proposed method when call Frequency query
+    struct Frequency {
         /// @brief key of array for correction
         int key;
-        /// @brief correction of frecuency
+        /// @brief correction of Frequency
         int count;
     };
+
+        /// @brief
+    std::map<const unsigned char*, int> element_count_;
+
+    /// @brief element_count_ update time
+    int element_count_step_;
+
+    /// @brief 
+    int c1_;
+
+    /// @brief 
+    int c2_;
     
     Recent_Counter(int c, int l, int _row_length, int _hash_number, int _field_num);
     ~Recent_Counter();
@@ -99,20 +95,20 @@ public:
     int CO_Query(const unsigned char* str, int length);//Count Sketch query an item
     unsigned int Query(const unsigned char* str, int length, bool display_min_pos);//CM(CU) Sketch update an item
 
-    /// @brief CM Sketch Query an item by Async Sliding Sketch
+    /// @brief CM Sketch Query an item by Delayed Insertion
     /// @param str target string
     /// @param length target string num
     /// @return The frequency in a Sketch
-    unsigned int AsyncSS_CM_Query(const unsigned char* str, int length);
+    unsigned int DelayedInsertion_CM_Query(const unsigned char* str, int length);
 
-    /// @brief Async SS update an item
+    /// @brief Delayed Insertion SS update an item
     /// @param str 
     /// @param length 
     /// @param num 
-    void AsyncSS_CM_Init(const unsigned char* str, int length, unsigned long long int num);
+    void DelayedInsertion_CM_Init(const unsigned char* str, int length, unsigned long long int num);
 
     /// @brief Initialize element_count_
-    void InitilizeElementCount();
+    void Initilize_ElementCount(unsigned long long int num);
 };
 
 #endif  // CLOCK_H
