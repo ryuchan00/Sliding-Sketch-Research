@@ -108,7 +108,7 @@ public:
     void DelayedInsertion_CM_Init(const unsigned char* str, int length, unsigned long long int num);
 
     /// @brief Initialize element_count_
-    void Initilize_ElementCount(unsigned long long int num);
+    void Initilize_ElementCount(int length, unsigned long long int num);
 };
 
 #endif  // CLOCK_H

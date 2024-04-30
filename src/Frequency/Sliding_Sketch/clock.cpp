@@ -1,6 +1,7 @@
 #include "clock.h"
 
 #include <math.h>                                                               
+#include <algorithm>
 
 struct Place{
     unsigned int serial;
@@ -211,20 +212,27 @@ void Recent_Counter::DelayedInsertion_CM_Init(const unsigned char* str, int leng
     }
 }
 
-void Recent_Counter::Initilize_ElementCount(unsigned long long int num) {
+void Recent_Counter::Initilize_ElementCount(int length, unsigned long long int num) {
+    unsigned int position;
     for(;last_time < num;++last_time){
         if (last_time % element_count_step_) {
             for (int i = 0; i < c1_; i++) {
                 int frequency_confirmations[c2_];
                 
-                //for(int k = 0;k < static_cast<int>(element_count_.size()); k++) {
-                    for (auto it = element_count_.begin(); it != element_count_.end(); it++) {
+                for (auto itr = element_count_.begin(); itr != element_count_.end(); itr++) {
 
                     // キャッシュの衝突を検知する
-                    //const unsigned char* key = element_count_[]
-                    frequency_confirmations[Hash(it->first,i,]);
+                    position = Hash(itr->first, i, length);
+                    frequency_confirmations[position] = max(frequency_confirmations[position], (*itr).second);
+                }
+
+                for (int j = 0; j < c2_; j++) {
+                    if (frequency_confirmations[j]) {
+                        counter[j].count = counter[j].count + frequency_confirmations[j];
+                    }
                 }
             }
         }
+        element_count_.clear();
     }
 }
