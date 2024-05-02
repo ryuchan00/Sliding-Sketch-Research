@@ -187,32 +187,10 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         if(c_p2 == 0 || ((p_p2 > c_p2) && (c_p2 < 2))){
             cycle_num2 = (cycle_num2 + 1) % field_num;
         }
-        // if ((prev_clock_pos2 > clock_pos2) && (prev_clock_pos2 - (clock_pos2 + len - 1) > 1)) {
-        //     cycle_num2 = (cycle_num2 + 1) % field_num;
-        // }
-        
-        // for(int i=0;i<len;i++) {
-        //     if (i % row_length == 0 && i != 0) {
-        //         std::cout << std::endl;
-        //     }
-        //     std::cout << "(" << counter[i].count[0] << "," << counter[i].count[1] << ") ";
-            
-        // }
-        // std::cout <<  std::endl;
-        // std::cout << "-------------" << std::endl;  
-        // std::cout <<  std::endl;
     }
 }
 
 void Recent_Counter::DelayedInsertion_CM_Init(const unsigned char* str, int length, unsigned long long int num) {
-//   # element_countのkeyを探す方法は今は線形探索で設計してみる
-//   target_key ← LinearSearch(element_count, j)
-//   if (target_key != -1) then # target_keyが見つかったら
-//     element_count[target_key].count ← element_count[target_key].count + 1
-//   else
-//     Frequency = new Frequency{ key: j, count: 0 }
-//     element_count.push ← Frequency
-//   end if
     if (element_count_.count(str) > 0) {
         element_count_.at(str)++;
     } else {
