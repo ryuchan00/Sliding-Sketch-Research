@@ -87,11 +87,6 @@ void Read_File(int argc, char* argv[]){
             mp[packet] += 1;
 
         int CM_guess;
-        if (input_num_max - 50 < num) {
-            CM_guess = CM_Counter.Query(packet.str, DATA_LEN, true);
-        } else {
-            CM_guess = CM_Counter.Query(packet.str, DATA_LEN, false);
-        }
         // int CM_guess = CM_Counter.Query(packet.str, DATA_LEN);
         // int CU_guess = CU_Counter.Query(packet.str, DATA_LEN);
         // int CO_guess = CO_Counter.CO_Query(packet.str, DATA_LEN);

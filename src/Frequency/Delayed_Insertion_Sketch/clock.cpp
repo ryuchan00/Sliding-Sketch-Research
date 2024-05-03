@@ -23,6 +23,7 @@ int Recent_Sketch::Mid(int *num){
 Recent_Counter::Recent_Counter(int c, int l, int _row_length, int _hash_numberber, int _field_num):
     Recent_Sketch(c,l,_row_length,_hash_numberber,_field_num){
     counter = new Unit [l];
+    counter_DE = new Unit2[l];
     field_num = _field_num;
     row_length = _row_length;
     for(int i = 0; i < l; i++){
@@ -200,21 +201,22 @@ void Recent_Counter::DelayedInsertion_CM_Init(const unsigned char* str, int leng
 
 void Recent_Counter::Initilize_ElementCount(int length, unsigned long long int num) {
     unsigned int position;
+
     for(;last_time < num;++last_time){
-        if (last_time % element_count_step_) {
+        if (last_time % element_count_step_ == 0) {
             for (int i = 0; i < c1_; i++) {
                 int frequency_confirmations[c2_];
                 
                 for (auto itr = element_count_.begin(); itr != element_count_.end(); itr++) {
-
                     // キャッシュの衝突を検知する
-                    position = Hash(itr->first, i, length);
+                    position = Hash(itr->first, i, length) % c2_;
+                    //position = Hash(itr->first, i, length) % row_length + i * row_length;
                     frequency_confirmations[position] = max(frequency_confirmations[position], (*itr).second);
                 }
 
                 for (int j = 0; j < c2_; j++) {
-                    if (frequency_confirmations[j]) {
-                        counter[j].count = counter[j].count + frequency_confirmations[j];
+                    if (frequency_confirmations[j] != 0) {
+                        counter_DE[j].count = counter_DE[j].count + frequency_confirmations[j];
                     }
                 }
             }

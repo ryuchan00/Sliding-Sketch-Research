@@ -62,8 +62,14 @@ public:
             return ret;
         }
     };
+
+    struct Unit2{
+        int count;
+    };
+
     Unit* counter;
     Unit* counter2;
+    Unit2* counter_DE;
 
     /// @brief used for proposed method when call Frequency query
     struct Frequency {
@@ -73,7 +79,7 @@ public:
         int count;
     };
 
-        /// @brief
+    /// @brief
     std::map<const unsigned char*, int> element_count_;
 
     /// @brief element_count_ update time
