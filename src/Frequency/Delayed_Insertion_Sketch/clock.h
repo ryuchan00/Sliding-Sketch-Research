@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <map>
 #include <string>
+#include <unordered_map>
 #include "definition.h"
 #include "hash_class.h"
 
@@ -80,18 +81,12 @@ public:
     };
 
     /// @brief
-    std::map<const unsigned char*, int> element_count_;
+    std::unordered_map<const unsigned char*, int> element_count_;
 
     /// @brief element_count_ update time
     int element_count_step_;
-
-    /// @brief 
-    int c1_;
-
-    /// @brief 
-    int c2_;
     
-    Recent_Counter(int c, int l, int _row_length, int _hash_number, int _field_num);
+    Recent_Counter(int c, int l, int _row_length, int _hash_number, int _field_num, int element_count_step);
     ~Recent_Counter();
     void Clock_Go(unsigned long long int num);
     void Clock_Go(unsigned long long int num, bool counter2_flag);

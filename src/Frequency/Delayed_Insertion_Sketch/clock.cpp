@@ -20,8 +20,9 @@ int Recent_Sketch::Mid(int *num){
     }
 }
 
-Recent_Counter::Recent_Counter(int c, int l, int _row_length, int _hash_numberber, int _field_num):
-    Recent_Sketch(c,l,_row_length,_hash_numberber,_field_num){
+Recent_Counter::Recent_Counter(int c, int l, int _row_length, int _hash_numberber, int _field_num, int element_count_step):
+    Recent_Sketch(c,l,_row_length,_hash_numberber,_field_num)
+    , element_count_step_(element_count_step) {
     counter = new Unit [l];
     counter_DE = new Unit2[l];
     field_num = _field_num;
@@ -144,8 +145,8 @@ int Recent_Counter::CO_Query(const unsigned char *str, int length){
 
 unsigned int Recent_Counter::DelayedInsertion_CM_Query(const unsigned char* str, int length) {
     int min_num = 0x7fffffff;
-    for(int i = 0;i < c1_;i++) {
-        min_num = min(counter[Hash(str,i,length)].count[0], min_num);
+    for(int i = 0;i < hash_number;i++) {
+        min_num = min(counter[Hash(str, i, length) % row_length + i * row_length].count[0], min_num);
     }
     return min_num;
 }
@@ -191,9 +192,12 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
     }
 }
 
+
 void Recent_Counter::DelayedInsertion_CM_Init(const unsigned char* str, int length, unsigned long long int num) {
+    Initilize_ElementCount(length, num * step);
+
     if (element_count_.count(str) > 0) {
-        element_count_.at(str)++;
+        element_count_[str]++;
     } else {
         element_count_[str] = 1;
     }
@@ -201,26 +205,24 @@ void Recent_Counter::DelayedInsertion_CM_Init(const unsigned char* str, int leng
 
 void Recent_Counter::Initilize_ElementCount(int length, unsigned long long int num) {
     unsigned int position;
-
     for(;last_time < num;++last_time){
-        if (last_time % element_count_step_ == 0) {
-            for (int i = 0; i < c1_; i++) {
-                int frequency_confirmations[c2_];
+        if (last_time % element_count_step_) {
+            for (int i = 0; i < hash_number; i++) {
+                int frequency_confirmations[row_length] = {0};
                 
                 for (auto itr = element_count_.begin(); itr != element_count_.end(); itr++) {
                     // キャッシュの衝突を検知する
-                    position = Hash(itr->first, i, length) % c2_;
-                    //position = Hash(itr->first, i, length) % row_length + i * row_length;
+                    position = Hash(itr->first, i, length) % row_length;
                     frequency_confirmations[position] = max(frequency_confirmations[position], (*itr).second);
                 }
 
-                for (int j = 0; j < c2_; j++) {
-                    if (frequency_confirmations[j] != 0) {
-                        counter_DE[j].count = counter_DE[j].count + frequency_confirmations[j];
+                for (int j = 0; j < row_length; j++) {
+                    if (frequency_confirmations[j] > 0) {
+                        counter[j + i * row_length].count = counter[j + i * row_length].count + frequency_confirmations[j];
                     }
                 }
             }
+            element_count_.clear();
         }
-        element_count_.clear();
     }
 }

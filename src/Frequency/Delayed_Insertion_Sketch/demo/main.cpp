@@ -36,11 +36,13 @@ void Read_File(int argc, char* argv[]){
     // バケットの数(today or yesterday)
     int field_num = 1;
     // 衝突の関係する
-    int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
+    int row_length = (mymemory * 1024 * 1024) / hash_number / 4;
+    
+    int element_count_step = 5000;
     // int row_length = 4;    // テスト用
     // hash_number * row_lengthはスケッチ全体のサイズ
     // 
-    Recent_Counter CM_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
+    Recent_Counter CM_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num, element_count_step);
     // Recent_Counter CU_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
     // Recent_Counter CO_Counter(2*cycle/3, hash_number * row_length, row_length, hash_number, field_num);
 
@@ -77,7 +79,8 @@ void Read_File(int argc, char* argv[]){
         // バイナリデータ？
         // cout << packet.str << endl;
 
-        CM_Counter.CM_Init(packet.str, DATA_LEN, num);
+        CM_Counter.DelayedInsertion_CM_Init(packet.str, DATA_LEN, num);
+        // CM_Counter.CM_Init(packet.str, DATA_LEN, num);
         // CU_Counter.CU_Init(packet.str, DATA_LEN, num);
         // CO_Counter.CO_Init(packet.str, DATA_LEN, num);
 
@@ -86,7 +89,7 @@ void Read_File(int argc, char* argv[]){
         else
             mp[packet] += 1;
 
-        int CM_guess;
+        int CM_guess = CM_Counter.DelayedInsertion_CM_Query(packet.str, DATA_LEN);
         // int CM_guess = CM_Counter.Query(packet.str, DATA_LEN);
         // int CU_guess = CU_Counter.Query(packet.str, DATA_LEN);
         // int CO_guess = CO_Counter.CO_Query(packet.str, DATA_LEN);
@@ -112,6 +115,7 @@ void Read_File(int argc, char* argv[]){
 
         if(num%cycle ==0){
             cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
+        // cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
         // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
         // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }
