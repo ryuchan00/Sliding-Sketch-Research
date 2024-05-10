@@ -60,7 +60,7 @@ void Recent_Counter::Initilize_ElementCount(int length, unsigned long long int n
     //std::cout << element_count_step_ << std::endl;
     for(;last_time < num;++last_time){
         //std::cout << num << ":" << last_time << std::endl;
-        if (last_time % element_count_step_) {
+        if (last_time % element_count_step_ == 0) {
             //std::cout << "hoge" << std::endl;
             for (int i = 0; i < hash_number; i++) {
                 int frequency_confirmations[row_length] = {0};

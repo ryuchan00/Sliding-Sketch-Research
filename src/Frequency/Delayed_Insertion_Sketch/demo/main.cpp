@@ -39,7 +39,7 @@ void Read_File(int argc, char* argv[]){
     int row_length = (mymemory * 1024 * 1024) / hash_number / 4;
     
     // int element_count_step = 5000;
-    int element_count_step = 50;
+    int element_count_step = 500;
     // int row_length = 4;    // テスト用
     // hash_number * row_lengthはスケッチ全体のサイズ
     // 
