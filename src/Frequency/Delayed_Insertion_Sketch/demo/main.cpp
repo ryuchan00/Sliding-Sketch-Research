@@ -98,23 +98,17 @@ void Read_File(int argc, char* argv[]){
 
         int CM_sub = CM_guess - real;
         double diff = (double)CM_guess - real;
-        // int CU_sub = CU_guess - real;
-        // int CO_sub = CO_guess - real;
 
         CM_dif += abs(CM_sub);
-        // CU_dif += abs(CU_sub);
-        // CO_dif += abs(CO_sub);
 
         CM_re = CM_re + (double)abs(CM_sub) / real;
-        // CU_re = CU_re + (double)abs(CU_sub) / real;
-        // CO_re = CO_re + (double)abs(CO_sub) / real;
 
         CM_ae += abs(CM_sub);
         // CU_ae += abs(CU_sub);
         // CO_ae += abs(CO_sub);
 
         if(num%cycle ==0){
-            cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
+        cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
         // cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
         // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
         // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
@@ -123,13 +117,12 @@ void Read_File(int argc, char* argv[]){
         // 終わり50個前から出力して、over estimationかunder estimationかを確認する
         // todo: clock_pos1かclock_pos2のどちらの管理区域か出力する必要がありそう
         // if (input_num_max - 50 < num) {
-        //     cout << num << "," << diff << "," << CM_guess << "," << real << endl;
+             cout << num << "," << diff << "," << CM_guess << "," << real << endl;
         // }
 
 
         num++;
 
-        
     }
 
 }

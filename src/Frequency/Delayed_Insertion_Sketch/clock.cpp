@@ -147,6 +147,7 @@ unsigned int Recent_Counter::DelayedInsertion_CM_Query(const unsigned char* str,
     int min_num = 0x7fffffff;
     for(int i = 0;i < hash_number;i++) {
         min_num = min(counter[Hash(str, i, length) % row_length + i * row_length].count[0], min_num);
+        //std::cout << counter[Hash(str, i, length) % row_length + i * row_length].count[0] << std::endl;
     }
     return min_num;
 }
@@ -196,33 +197,46 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
 void Recent_Counter::DelayedInsertion_CM_Init(const unsigned char* str, int length, unsigned long long int num) {
     Initilize_ElementCount(length, num * step);
 
-    if (element_count_.count(str) > 0) {
-        element_count_[str]++;
+    std::string str2 = std::string((char*)str); // string型へ変換
+
+    if (element_count_.count(str2) > 0) {
+        element_count_[str2]++;
+        //std::cout << element_count_[str2] << std::endl;  
     } else {
-        element_count_[str] = 1;
+        element_count_[str2] = 1;
+        //std::cout << element_count_[str2] << std::endl;  
     }
+    //std::cout << str << std::endl;
 }
 
 void Recent_Counter::Initilize_ElementCount(int length, unsigned long long int num) {
     unsigned int position;
+    //std::cout << element_count_step_ << std::endl;
     for(;last_time < num;++last_time){
+        //std::cout << num << ":" << last_time << std::endl;
         if (last_time % element_count_step_) {
+            //std::cout << "hoge" << std::endl;
             for (int i = 0; i < hash_number; i++) {
                 int frequency_confirmations[row_length] = {0};
                 
                 for (auto itr = element_count_.begin(); itr != element_count_.end(); itr++) {
                     // キャッシュの衝突を検知する
-                    position = Hash(itr->first, i, length) % row_length;
+                    auto uchrs = reinterpret_cast<unsigned char*>(const_cast<char*>(itr->first.c_str()));
+
+                    position = Hash(uchrs, i, length) % row_length;
                     frequency_confirmations[position] = max(frequency_confirmations[position], (*itr).second);
                 }
 
                 for (int j = 0; j < row_length; j++) {
                     if (frequency_confirmations[j] > 0) {
-                        counter[j + i * row_length].count = counter[j + i * row_length].count + frequency_confirmations[j];
+                        //std::cout << "hoge" << std::endl;
+                        counter[j + i * row_length].count[0] = counter[j + i * row_length].count[0] + frequency_confirmations[j];
                     }
                 }
+                //std::cout << "end2" << std::endl;
             }
             element_count_.clear();
         }
     }
+    //std::cout << "end3" << std::endl;
 }
