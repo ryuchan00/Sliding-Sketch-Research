@@ -23,28 +23,27 @@ unordered_map<Data, int, My_Hash> mp;
 //argv[9]:field
 
 void Read_File(int argc, char* argv[]){
-    int cycle = 50000;
-    // int cycle = 8;
+    // int cycle = 50000;
+    int cycle = 50;
     // 所持しているハッシュ関数
     int hash_number = 10;
     // int hash_number = 2;    // テスト用
     // double mymemory  = 1;
     // double mymemory  = 1;
     double mymemory  = 2;
-    int input_num_max = 500000;
-    // int input_num_max = 80;
+    //int input_num_max = 500000;
+    int input_num_max = 500;
     // バケットの数(today or yesterday)
     int field_num = 1;
     // 衝突の関係する
     int row_length = (mymemory * 1024 * 1024) / hash_number / 4;
     
-    int element_count_step = 5000;
+    // int element_count_step = 5000;
+    int element_count_step = 50;
     // int row_length = 4;    // テスト用
     // hash_number * row_lengthはスケッチ全体のサイズ
     // 
     Recent_Counter CM_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num, element_count_step);
-    // Recent_Counter CU_Counter(cycle, hash_number * row_length, row_length, hash_number, field_num);
-    // Recent_Counter CO_Counter(2*cycle/3, hash_number * row_length, row_length, hash_number, field_num);
 
     Data *dat = new Data[cycle + 1];
 
@@ -54,7 +53,6 @@ void Read_File(int argc, char* argv[]){
     double CM_re = 0,  CU_re = 0,  CO_re = 0;
 
     FILE* file = fopen("../../../../data/formatted00.dat","rb");
-    // FILE* file = fopen("../../../../data/web_page2.dat","rb");
     Data packet;
 
 
@@ -80,9 +78,6 @@ void Read_File(int argc, char* argv[]){
         // cout << packet.str << endl;
 
         CM_Counter.DelayedInsertion_CM_Init(packet.str, DATA_LEN, num);
-        // CM_Counter.CM_Init(packet.str, DATA_LEN, num);
-        // CU_Counter.CU_Init(packet.str, DATA_LEN, num);
-        // CO_Counter.CO_Init(packet.str, DATA_LEN, num);
 
         if(mp.find(packet) == mp.end())
             mp[packet] = 1;
@@ -90,9 +85,6 @@ void Read_File(int argc, char* argv[]){
             mp[packet] += 1;
 
         int CM_guess = CM_Counter.DelayedInsertion_CM_Query(packet.str, DATA_LEN);
-        // int CM_guess = CM_Counter.Query(packet.str, DATA_LEN);
-        // int CU_guess = CU_Counter.Query(packet.str, DATA_LEN);
-        // int CO_guess = CO_Counter.CO_Query(packet.str, DATA_LEN);
 
         double real = mp[packet];
 
@@ -104,14 +96,9 @@ void Read_File(int argc, char* argv[]){
         CM_re = CM_re + (double)abs(CM_sub) / real;
 
         CM_ae += abs(CM_sub);
-        // CU_ae += abs(CU_sub);
-        // CO_ae += abs(CO_sub);
 
         if(num%cycle ==0){
         cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
-        // cout << "Sl-CM" << "," << num << "," << CM_re / num << endl;
-        // cout << "Sl-CU" << "," << num << "," << CU_re / num << endl;
-        // cout << "Sl-Count" << "," << num << "," << CO_re / num << endl;
         }
 
         // 終わり50個前から出力して、over estimationかunder estimationかを確認する
