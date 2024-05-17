@@ -23,16 +23,16 @@ unordered_map<Data, int, My_Hash> mp;
 //argv[9]:field
 
 void Read_File(int argc, char* argv[]){
-    // int cycle = 50000;
-    int cycle = 50;
+    int cycle = 50000;
+    // int cycle = 50;
     // 所持しているハッシュ関数
     int hash_number = 10;
     // int hash_number = 2;    // テスト用
     // double mymemory  = 1;
     // double mymemory  = 1;
     double mymemory  = 2;
-    //int input_num_max = 500000;
-    int input_num_max = 500;
+    int input_num_max = 500000;
+    // int input_num_max = 500;
     // バケットの数(today or yesterday)
     int field_num = 1;
     // 衝突の関係する
@@ -104,7 +104,7 @@ void Read_File(int argc, char* argv[]){
         // 終わり50個前から出力して、over estimationかunder estimationかを確認する
         // todo: clock_pos1かclock_pos2のどちらの管理区域か出力する必要がありそう
         // if (input_num_max - 50 < num) {
-             cout << num << "," << diff << "," << CM_guess << "," << real << endl;
+            //  cout << num << "," << diff << "," << CM_guess << "," << real << endl;
         // }
 
 

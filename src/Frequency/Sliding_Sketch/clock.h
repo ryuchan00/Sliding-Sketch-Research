@@ -68,13 +68,16 @@ public:
     /// @brief used for proposed method when call Frequency query
     struct Frequency {
         /// @brief key of array for correction
-        int key;
+        char* key;
         /// @brief correction of Frequency
         int count;
     };
 
-        /// @brief
+    /// @brief
     std::map<const unsigned char*, int> element_count_;
+
+    /// @brief correction sketch
+    std::vector<Frequency> element_count_2_;
 
     /// @brief element_count_ update time
     int element_count_step_;

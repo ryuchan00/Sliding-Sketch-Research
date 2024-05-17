@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include "definition.h"
 #include "hash_class.h"
 
@@ -75,13 +76,16 @@ public:
     /// @brief used for proposed method when call Frequency query
     struct Frequency {
         /// @brief key of array for correction
-        int key;
+        const unsigned char* key;
         /// @brief correction of Frequency
         int count;
     };
 
     /// @brief
     std::unordered_map<std::string, int> element_count_;
+
+    /// @brief correction sketch
+    std::vector<Frequency> element_count_2_;
 
     /// @brief element_count_ update time
     int element_count_step_;
@@ -110,6 +114,8 @@ public:
 
     /// @brief Initialize element_count_
     void Initilize_ElementCount(int length, unsigned long long int num);
+
+    int GetTargetKeyIndex(const unsigned char* str);
 };
 
 #endif  // CLOCK_H
