@@ -5,6 +5,7 @@
 #include <iostream>
 
 unsigned int Hash(const unsigned char* str, int num, int length);
+unsigned int Hash(std::string str, int num, int length);
 unsigned int BOB1(const unsigned char * str, unsigned int len);
 unsigned int BOB2(const unsigned char * str, unsigned int len);
 unsigned int BOB3(const unsigned char * str, unsigned int len);

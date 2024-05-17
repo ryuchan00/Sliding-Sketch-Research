@@ -76,7 +76,8 @@ public:
     /// @brief used for proposed method when call Frequency query
     struct Frequency {
         /// @brief key of array for correction
-        const unsigned char* key;
+        // const unsigned char* key;
+        std::string key;
         /// @brief correction of Frequency
         int count;
     };
@@ -116,6 +117,7 @@ public:
     void Initilize_ElementCount(int length, unsigned long long int num);
 
     int GetTargetKeyIndex(const unsigned char* str);
+    int GetTargetKeyIndex(std::string str);
 };
 
 #endif  // CLOCK_H
