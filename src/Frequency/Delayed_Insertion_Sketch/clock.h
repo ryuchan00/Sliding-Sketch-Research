@@ -11,7 +11,7 @@
 #include "definition.h"
 #include "hash_class.h"
 
-
+typedef std::array<const unsigned char, DATA_LEN> packet_str;
 
 class Recent_Sketch{
 public :
@@ -69,6 +69,18 @@ public:
         int count;
     };
 
+    struct ArrayHasher {
+        std::size_t operator()(const std::array<char, DATA_LEN>& a) const {
+            std::size_t h = 0;
+
+            for (auto e : a) {
+                h ^= std::hash<char>{}(e) + 0x9e3779b9 + (h << 6) + (h >> 2);
+            }
+            return h;
+        }
+    };
+
+
     Unit* counter;
     Unit* counter2;
     Unit2* counter_DE;
@@ -86,7 +98,12 @@ public:
     std::unordered_map<std::string, int> element_count_;
 
     /// @brief correction sketch
-    std::vector<Frequency> element_count_2_;
+    //std::vector<Frequency> element_count_2_;
+
+    std::map<packet_str, int> element_count_2_;
+
+    /// @brief correction sketch
+    //std::vector<Frequency> element_count_2_;
 
     /// @brief element_count_ update time
     int element_count_step_;
@@ -118,6 +135,7 @@ public:
 
     int GetTargetKeyIndex(const unsigned char* str);
     int GetTargetKeyIndex(std::string str);
+    packet_str GetTargetKey(const unsigned char* str);
 };
 
 #endif  // CLOCK_H

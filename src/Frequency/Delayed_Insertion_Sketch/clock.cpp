@@ -36,39 +36,47 @@ unsigned int Recent_Counter::DelayedInsertion_CM_Query(const unsigned char* str,
 
     int target_index = GetTargetKeyIndex(str2);
     int correction_count = 0;
-    if (target_index != -1) {
-        correction_count = element_count_2_.at(target_index).count;
-    }
+    
+    //if (target_index != -1) {
+        correction_count = element_count_2_.at(GetTargetKey(str));
+    //}
     //std::cout << correction_count << std::endl;
 
     for(int i = 0;i < hash_number;i++) {
-        min_num = min(counter[Hash(str2, i, length) % row_length + i * row_length].count[0] + correction_count, min_num);
+        min_num = min(counter[Hash(str, i, length) % row_length + i * row_length].count[0] + correction_count, min_num);
     }
     return min_num;
 }
 
 void Recent_Counter::DelayedInsertion_CM_Init(const unsigned char* str, int length, unsigned long long int num) {
+    //std::cout << str << std::endl;
     Initilize_ElementCount(length, num);
 
-    std::string str2 = std::string((char*)str); // string型へ変換
+    // std::string str2 = std::string((char*)str); // string型へ変換
 
-    int target_key = GetTargetKeyIndex(str2);
+    //int target_key = GetTargetKeyIndex(str2);
     //std::cout << target_key << std::endl;
 
-    if (target_key == -1) {
-        // not found
-        //element_count_.at(str2) = 1;
-        Frequency freq;
-        freq.key = str2;
-        freq.count = 1;
-        element_count_2_.push_back(freq);
-        //  std::cout << "then" << std::endl;
-        //std::cout << element_count_[str2] << std::endl;  
+    if (element_count_2_.count(GetTargetKey(str)) != 0) {
+        element_count_2_.at(GetTargetKey(str))++;
     } else {
-        element_count_2_.at(target_key).count = element_count_2_.at(target_key).count + 1;
-        //  std::cout << "else" << std::endl;
-        //std::cout << element_count_[str2] << std::endl;  
+        element_count_2_.insert(std::make_pair(GetTargetKey(str), 1));
     }
+
+    // if (element_count_2_[GetTargetKey(str)] == 0) {
+    //     // not found
+    //     //element_count_.at(str2) = 1;
+    //     //Frequency freq;
+    //     //freq.key = str2;
+    //     //freq.count = 1;
+    //     element_count_2_.push_back(freq);
+    //     //  std::cout << "then" << std::endl;
+    //     //std::cout << element_count_[str2] << std::endl;  
+    // } else {
+    //     element_count_2_.at(target_key).count = element_count_2_.at(target_key).count + 1;
+    //     //  std::cout << "else" << std::endl;
+    //     //std::cout << element_count_[str2] << std::endl;  
+    // }
     // std::cout << element_count_2_.size() << std::endl;
     //std::cout << str << std::endl;
 }
@@ -83,18 +91,26 @@ void Recent_Counter::Initilize_ElementCount(int length, unsigned long long int n
 
             for (int i = 0; i < hash_number; i++) {
                 frequency_confirmations[row_length] = {0};
+                //Hash(str, i, length) % row_length + i * row_length
                 
                 //for (auto itr = element_count_.begin(); itr != element_count_.end(); itr++) {
-                for (Frequency freq : element_count_2_) {
+                for( const auto& [key, value] : element_count_2_) {
                     // キャッシュの衝突を検知する
                     //auto target_key = reinterpret_cast<unsigned char*>(const_cast<char*>(itr->first.c_str()));
-
-                    frequency_confirmations[position] = max(frequency_confirmations[position], freq.count);
+                    unsigned char a[DATA_LEN];
+                    for(int i = 0; DATA_LEN > i; i++) {
+                        // std::cout << key[i];
+                        a[i] = key[i];
+                    }
+                    //  std::cout << a << std::endl;
+                    position = Hash(a, i, length) % row_length;
+                    frequency_confirmations[position] = max(frequency_confirmations[position], value);
                 }
 
                 for (int j = 0; j < row_length; j++) {
                     if (frequency_confirmations[j] > 0) {
                         counter[j + i * row_length].count[0] = counter[j + i * row_length].count[0] + frequency_confirmations[j];
+                        // std::cout << counter[j + i * row_length].count[0] << std::endl;
                     }
                 }
             }
@@ -109,7 +125,7 @@ int Recent_Counter::GetTargetKeyIndex(const unsigned char* str) {
     std::string str2 = std::string((char*)str); // string型へ変換
     // std::string str3 = std::string(reinterpret_cast<const char*>(str));
 
-    for (Frequency freq : element_count_2_) {
+    //for (Frequency freq : element_count_2_) {
         // std::string freq_key2 = std::string((char*)freq.key); // string型へ変換
         // std::string freq_key2 = std::string(reinterpret_cast<const char*>(freq.key));
 
@@ -124,7 +140,7 @@ int Recent_Counter::GetTargetKeyIndex(const unsigned char* str) {
         // }
         // i++;
         //std::cout << "hoge" << std::endl;
-    }
+    //}
     return -1;
 }
 
@@ -133,21 +149,25 @@ int Recent_Counter::GetTargetKeyIndex(std::string str) {
 
     // std::string str3 = std::string(reinterpret_cast<const char*>(str));
 
-    for (Frequency freq : element_count_2_) {
+    // for (Frequency freq : element_count_2_) {
         // std::string freq_key2 = std::string((char*)freq.key); // string型へ変換
         // std::string freq_key2 = std::string(reinterpret_cast<const char*>(freq.key));
 
         //std::cout << freq.key << ":" << str << std::endl;
         // if (freq.key == str) {
         // if (freq_key2 == str2) {
-        if (str == freq.key) {
+        // if (str == freq.key) {
         // if (freq_key2 == str3) {
             // std::cout << freq.key << ":" << str << std::endl;
             // std::cout << "then" << std::endl;
-            return i;
-        }
-        i++;
+            // return i;
+        // }
+        // i++;
         //std::cout << "hoge" << std::endl;
-    }
+    // }
     return -1;
+}
+
+packet_str Recent_Counter::GetTargetKey(const unsigned char* str) {
+    return {str[0],str[1],str[2],str[3],str[4],str[5],str[6],str[7]};
 }

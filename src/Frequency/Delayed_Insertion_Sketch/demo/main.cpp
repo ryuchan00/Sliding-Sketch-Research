@@ -104,7 +104,7 @@ void Read_File(int argc, char* argv[]){
         // 終わり50個前から出力して、over estimationかunder estimationかを確認する
         // todo: clock_pos1かclock_pos2のどちらの管理区域か出力する必要がありそう
         // if (input_num_max - 50 < num) {
-            //  cout << num << "," << diff << "," << CM_guess << "," << real << endl;
+             cout << num << "," << diff << "," << CM_guess << "," << real << endl;
         // }
 
 
