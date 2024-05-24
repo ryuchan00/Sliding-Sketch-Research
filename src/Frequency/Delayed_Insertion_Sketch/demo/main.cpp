@@ -34,9 +34,9 @@ void Read_File(int argc, char* argv[]){
     int input_num_max = 500000;
     // int input_num_max = 500;
     // バケットの数(today or yesterday)
-    int field_num = 1;
+    int field_num = 2;
     // 衝突の関係する
-    int row_length = (mymemory * 1024 * 1024) / hash_number / 4;
+    int row_length = (mymemory * 1024 * 1024) / hash_number / (4 * field_num);
     
     int element_count_step = 5000;
     // int element_count_step = 500;
@@ -104,7 +104,7 @@ void Read_File(int argc, char* argv[]){
         // 終わり50個前から出力して、over estimationかunder estimationかを確認する
         // todo: clock_pos1かclock_pos2のどちらの管理区域か出力する必要がありそう
         // if (input_num_max - 50 < num) {
-             cout << num << "," << diff << "," << CM_guess << "," << real << endl;
+             //cout << num << "," << diff << "," << CM_guess << "," << real << endl;
         // }
 
 

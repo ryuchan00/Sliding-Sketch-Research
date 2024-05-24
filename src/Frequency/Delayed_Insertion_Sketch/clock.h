@@ -31,7 +31,7 @@ public :
     // c = 500000
     // l = スケッチの全体のサイズ
     Recent_Sketch(unsigned int c, unsigned int l, int _row_length, int _hash_number, int _field_num):
-        len(l),step(l/c),row_length(_row_length),hash_number(_hash_number),field_num(_field_num){
+        len(l),step(l*(_field_num-1)/c),row_length(_row_length),hash_number(_hash_number),field_num(_field_num){
         // clock_pos2 = 0;
         // cycle_num2 = 0;
         // 本当にこの実装で大丈夫か？という懸念もある
@@ -94,8 +94,6 @@ public:
         int count;
     };
 
-    /// @brief
-    std::unordered_map<std::string, int> element_count_;
 
     /// @brief correction sketch
     //std::vector<Frequency> element_count_2_;
