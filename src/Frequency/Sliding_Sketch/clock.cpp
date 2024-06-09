@@ -1,7 +1,6 @@
 #include "clock.h"
 
 #include <math.h>                                                               
-#include <algorithm>
 
 struct Place{
     unsigned int serial;
@@ -141,14 +140,6 @@ int Recent_Counter::CO_Query(const unsigned char *str, int length){
     return Mid(n);
 }
 
-unsigned int Recent_Counter::DelayedInsertion_CM_Query(const unsigned char* str, int length) {
-    int min_num = 0x7fffffff;
-    for(int i = 0;i < c1_;i++) {
-        min_num = min(counter[Hash(str,i,length)].count[0], min_num);
-    }
-    return min_num;
-}
-
 void Recent_Counter::Clock_Go(unsigned long long int num){
     for(;last_time < num;++last_time){
         // std::cout << "num: " << num << " clock_pos: " << clock_pos << " clock_pos2: " << clock_pos2 << std::endl;
@@ -201,46 +192,5 @@ void Recent_Counter::Clock_Go(unsigned long long int num){
         // std::cout <<  std::endl;
         // std::cout << "-------------" << std::endl;  
         // std::cout <<  std::endl;
-    }
-}
-
-void Recent_Counter::DelayedInsertion_CM_Init(const unsigned char* str, int length, unsigned long long int num) {
-//   # element_countのkeyを探す方法は今は線形探索で設計してみる
-//   target_key ← LinearSearch(element_count, j)
-//   if (target_key != -1) then # target_keyが見つかったら
-//     element_count[target_key].count ← element_count[target_key].count + 1
-//   else
-//     Frequency = new Frequency{ key: j, count: 0 }
-//     element_count.push ← Frequency
-//   end if
-    if (element_count_.count(str) > 0) {
-        element_count_.at(str)++;
-    } else {
-        element_count_[str] = 1;
-    }
-}
-
-void Recent_Counter::Initilize_ElementCount(int length, unsigned long long int num) {
-    unsigned int position;
-    for(;last_time < num;++last_time){
-        if (last_time % element_count_step_) {
-            for (int i = 0; i < c1_; i++) {
-                int frequency_confirmations[c2_];
-                
-                for (auto itr = element_count_.begin(); itr != element_count_.end(); itr++) {
-
-                    // キャッシュの衝突を検知する
-                    position = Hash(itr->first, i, length);
-                    frequency_confirmations[position] = max(frequency_confirmations[position], (*itr).second);
-                }
-
-                for (int j = 0; j < c2_; j++) {
-                    if (frequency_confirmations[j]) {
-                        counter[j].count = counter[j].count + frequency_confirmations[j];
-                    }
-                }
-            }
-        }
-        element_count_.clear();
     }
 }

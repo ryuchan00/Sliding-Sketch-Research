@@ -4,8 +4,6 @@
 #include <iostream>
 #include <string.h>
 #include <algorithm>
-#include <map>
-#include <string>
 #include "definition.h"
 #include "hash_class.h"
 
@@ -64,30 +62,8 @@ public:
     };
     Unit* counter;
     Unit* counter2;
-
-    /// @brief used for proposed method when call Frequency query
-    struct Frequency {
-        /// @brief key of array for correction
-        char* key;
-        /// @brief correction of Frequency
-        int count;
-    };
-
-    /// @brief
-    std::map<const unsigned char*, int> element_count_;
-
-    /// @brief correction sketch
-    std::vector<Frequency> element_count_2_;
-
-    /// @brief element_count_ update time
-    int element_count_step_;
-
-    /// @brief 
-    int c1_;
-
-    /// @brief 
-    int c2_;
     
+
     Recent_Counter(int c, int l, int _row_length, int _hash_number, int _field_num);
     ~Recent_Counter();
     void Clock_Go(unsigned long long int num);
@@ -97,21 +73,6 @@ public:
     void CU_Init(const unsigned char* str, int length, unsigned long long int num);//CU Sketch update an item
     int CO_Query(const unsigned char* str, int length);//Count Sketch query an item
     unsigned int Query(const unsigned char* str, int length, bool display_min_pos);//CM(CU) Sketch update an item
-
-    /// @brief CM Sketch Query an item by Delayed Insertion
-    /// @param str target string
-    /// @param length target string num
-    /// @return The frequency in a Sketch
-    unsigned int DelayedInsertion_CM_Query(const unsigned char* str, int length);
-
-    /// @brief Delayed Insertion SS update an item
-    /// @param str 
-    /// @param length 
-    /// @param num 
-    void DelayedInsertion_CM_Init(const unsigned char* str, int length, unsigned long long int num);
-
-    /// @brief Initialize element_count_
-    void Initilize_ElementCount(int length, unsigned long long int num);
 };
 
-#endif  // CLOCK_H
+#endif // CLOCK_H
